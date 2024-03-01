@@ -48,7 +48,7 @@ const Unzipper = ({
     }, [isProcessing, filesLength, pause])
   
   return (
-    <div>
+    <div className='zipWrap'>
       <h2>Unzipped Files:</h2>
       {isProcessing && filesLength > 0 && <p>
           Extracting {countProgress} files out of {filesLength}...
@@ -59,15 +59,20 @@ const Unzipper = ({
         {files.length > 0 && !pause && files.map((file, index) => {
           return (
           <li key={index}>
-            {file.name}
-             <button onClick={() => handleCopyFile(file, index)}>Copy</button>
+            
+            <div className='name'>{file.name}</div>
+            <div>
+              <button className='copyBtn'  onClick={() => handleCopyFile(file, index)}>Copy</button>
               <input 
-                type="text" 
+                type="text"
+                className='inputText' 
                 value={renameValue.index === index ? renameValue.value : ''}
                 placeholder="New filename" 
                 onChange={e => setRename({index: index, value: e.target.value})} 
               />
-              <button onClick={(e) => handleRenameFile(file, renameValue.value, index)}>Rename</button>
+              <button className='renameBtn' onClick={(e) => handleRenameFile(file, renameValue.value, index)}>Rename</button>
+            </div>
+             
             </li>
         )})}
       </ul>

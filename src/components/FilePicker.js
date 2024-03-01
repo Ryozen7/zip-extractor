@@ -40,6 +40,7 @@ const FilePicker = () => {
     
     return mimeTypes[ext] || "text/plain"
   }
+
   const formatName = (fileName) => {
     const name = fileName.split('/').pop();
     const index = name.lastIndexOf(".");
@@ -48,9 +49,13 @@ const FilePicker = () => {
   }
 
   const handleUnzipFiles = useCallback(async(status) => {
+    if (!zipFile) {
+      return alert('Must select a zip file to extract.')
+    };
+
     setFiles([]);
     setIsProcessing(true);
-    if (!zipFile) return alert('Must select a zip file to extract.');
+
     try {
       const zip = new JSZip();
       
@@ -116,7 +121,6 @@ const FilePicker = () => {
   };
 
 
-  console.log("dsd", files)
   return (
     <div className='wrapper'>
       {!zipFile ? 
@@ -130,14 +134,20 @@ const FilePicker = () => {
           You selected {zipFile.name}
         </div>
       }
-      <label htmlFor="destination">Destination Folder:</label>
-      <input
-        type="text"
-        id="destination"
-        value={destinationFolder}
-        onChange={handleDestinationChange}
-      />
-      <button onClick={handleUnzipFiles}>Submit</button>
+      <div>
+           <label htmlFor="destination">Destination:</label>
+            <input
+              type="text"
+              id="destination"
+              value={destinationFolder}
+              onChange={handleDestinationChange}
+            />
+           
+      </div>
+   
+      <div>
+      <button onClick={handleUnzipFiles} className="extractBtn">Extract Files</button>
+      </div>
       
       {zipFile && (
         <Unzipper files={files} 
